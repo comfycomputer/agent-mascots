@@ -18,7 +18,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const ALL = ['html', 'react', 'vue', 'svelte', 'solid'];
 const wanted = process.argv.slice(2);
 const names = wanted.length ? wanted : ALL;
-const firstPort = Number(process.env.EXAMPLES_PORT ?? 41900);
+const firstPort = Number(process.env.EXAMPLES_PORT ?? 4900);
 
 async function waitForServer(url) {
   for (let tries = 0; tries < 120; tries += 1) {

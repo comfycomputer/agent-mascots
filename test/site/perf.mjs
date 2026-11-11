@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
-const PORT = Number(process.env.SITE_PORT ?? 41890);
+const PORT = Number(process.env.SITE_PORT ?? 4890);
 const BASE = `http://127.0.0.1:${PORT}`;
 const RUNS = Number(process.env.RUNS ?? 5);
 const LCP_MS = 1500;

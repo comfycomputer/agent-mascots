@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
-const PORT = Number(process.env.PORT ?? 41874);
+const PORT = Number(process.env.PORT ?? 4874);
 const BUDGET = 1000 / 60;
 
 const flags = Object.fromEntries(

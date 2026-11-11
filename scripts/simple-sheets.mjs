@@ -9,7 +9,7 @@ import { chromium } from 'playwright';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const out = `${root}test/screenshots/`;
-const PORT = Number(process.env.PORT ?? 41875);
+const PORT = Number(process.env.PORT ?? 4875);
 const SHAPES = ['blob', 'orb', 'egg', 'squircle', 'flame', 'cloud', 'bell', 'ghost', 'cap', 'gem'];
 const MOODS = ['idle', 'thinking', 'working', 'success', 'error', 'listening', 'speaking', 'waiting', 'sleeping'];
 const SIZES = [16, 24, 32];

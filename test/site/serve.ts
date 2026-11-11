@@ -12,7 +12,7 @@ import { extname, resolve } from 'node:path';
 import { SITE_BASE } from '../../site/config.ts';
 
 const root = process.env.SITE_OUT_DIR ? resolve(process.env.SITE_OUT_DIR) : resolve(import.meta.dirname, '../../site/dist');
-const port = Number(process.argv[2] ?? process.env.SITE_PORT ?? 41880);
+const port = Number(process.argv[2] ?? process.env.SITE_PORT ?? 4880);
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html;charset=utf-8',
