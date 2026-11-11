@@ -1,0 +1,22 @@
+<!-- Serve from your project root. -->
+<script
+  type="module"
+  src="%SCRIPT_SRC%"
+></script>
+
+<agent-mascot
+  id="agent"
+  shape="cloud"
+  mood="thinking"
+></agent-mascot>
+
+<script>
+  const agent =
+    document.querySelector('#agent');
+  agent.addEventListener(
+    'mascot-poke',
+    () => {
+      agent.mood = 'success';
+    },
+  );
+</script>

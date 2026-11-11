@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>agent-mascots: vanilla HTML</title>
+    <!-- In your own page, use https://cdn.jsdelivr.net/npm/agent-mascots/dist/cdn.js -->
+    <script type="module" src="/dist/cdn.js"></script>
+    <style>
+      body { margin: 0; font: 16px/1.5 system-ui, sans-serif; }
+      #stage { display: grid; place-items: center; gap: 16px; min-height: 100vh; align-content: center; }
+      agent-mascot { width: 200px; }
+      nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+      button { font: inherit; padding: 8px 12px; cursor: pointer; }
+      button[aria-pressed="true"] { font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <main id="stage">
+      <agent-mascot shape="orb" color="#5b5bd6" track="#stage"></agent-mascot>
+      <nav></nav>
+      <p>Pokes: <output>0</output></p>
+    </main>
+    <script type="module">
+      const mascot = document.querySelector('agent-mascot');
+      const nav = document.querySelector('nav');
+      const output = document.querySelector('output');
+
+      const buttons = ['idle', 'thinking', 'working', 'success', 'error'].map((mood) => {
+        const button = document.createElement('button');
+        button.textContent = mood;
+        button.setAttribute('aria-pressed', mood === 'idle');
+        button.addEventListener('click', () => {
+          mascot.mood = mood;
+          buttons.forEach((other) => other.setAttribute('aria-pressed', other === button));
+        });
+        return button;
+      });
+      nav.append(...buttons);
+
+      let pokes = 0;
+      mascot.addEventListener('mascot-poke', () => (output.textContent = ++pokes));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<!-- Svelte 5 -->
+<script>
+  import 'agent-mascots';
+
+  let mood = $state('thinking');
+</script>
+
+<agent-mascot
+  shape="cloud"
+  {mood}
+  onmascot-poke={() =>
+    (mood = 'success')}
+></agent-mascot>

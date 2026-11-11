@@ -1,0 +1,8 @@
+{
+  "name": "consumer-html",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "agent-mascots": "*"
+  }
+}

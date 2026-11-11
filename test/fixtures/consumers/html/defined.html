@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sizing before upgrade</title>
+    <style>
+      agent-mascot {
+        width: 96px;
+      }
+      agent-mascot:not(:defined) {
+        display: inline-block;
+        aspect-ratio: 1;
+        vertical-align: middle;
+      }
+    </style>
+    <script type="module">
+      const box = () => {
+        const { width, height } = document.querySelector('agent-mascot').getBoundingClientRect();
+        return `${width}x${height}`;
+      };
+      const before = box();
+      await import('./node_modules/agent-mascots/dist/cdn.js');
+      globalThis.boxes = [before, box()];
+    </script>
+  </head>
+  <body>
+    <agent-mascot></agent-mascot>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>agent-mascots benchmark</title>
+    <style>
+      body { margin: 0; background: #f4f5f7; font: 12px system-ui; }
+      #stage { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; }
+    </style>
+    <script type="module">
+      import * as api from '/dist/index.js';
+
+      const SHAPES = api.MASCOT_SHAPES;
+      const MOODS = api.MASCOT_MOODS;
+      const stage = document.getElementById('stage');
+
+      /** Add one mascot per entry; every scene is deterministic for a given count. */
+      function mount(list) {
+        stage.replaceChildren();
+        for (const attrs of list) {
+          const el = document.createElement('agent-mascot');
+          for (const [name, value] of Object.entries(attrs)) el.setAttribute(name, value);
+          stage.append(el);
+        }
+      }
+
+      const many = (count, size, moods) =>
+        Array.from({ length: count }, (_, i) => ({
+          size,
+          shape: SHAPES[i % SHAPES.length],
+          mood: moods[i % moods.length],
+        }));
+
+      const SCENES = {
+        // Three large mascots, the spec's 60fps target.
+        'full3-idle': () => [{ size: 320 }, { size: 320, shape: 'orb' }, { size: 320, shape: 'egg' }],
+        // The most expensive full mix: outline morphs on the filtered layer and a frost mask.
+        'full3-worst': () => [
+          { size: 320, shape: 'flame', mood: 'working' },
+          { size: 320, shape: 'ghost', material: 'frost', mood: 'speaking' },
+          { size: 320, shape: 'gem', material: 'glass', mood: 'thinking' },
+        ],
+        // The same worst case split by cost, to see which part dominates.
+        'full3-flame': () => [1, 2, 3].map(() => ({ size: 320, shape: 'flame', mood: 'working' })),
+        'full3-frost': () => [1, 2, 3].map(() => ({ size: 320, shape: 'ghost', material: 'frost', mood: 'speaking' })),
+        'full3-glass': () => [1, 2, 3].map(() => ({ size: 320, shape: 'gem', material: 'glass', mood: 'thinking' })),
+        'full3-frost-blob': () => [1, 2, 3].map(() => ({ size: 320, material: 'frost' })),
+        // Fifty small mascots in a list, all on screen, the spec's no-jank target.
+        'simple50-idle-32': () => many(50, 32, ['idle']),
+        'simple50-mixed-32': () => many(50, 32, MOODS),
+        'simple50-mixed-16': () => many(50, 16, MOODS),
+        'simple50-mixed-64': () => many(50, 64, MOODS),
+      };
+
+      /** Mount a scene, let it settle, then record rAF intervals for `ms`. */
+      window.bench = async (scene, ms, settle = 1000) => {
+        mount(SCENES[scene]());
+        await new Promise((resolve) => setTimeout(resolve, settle));
+        const intervals = [];
+        await new Promise((resolve) => {
+          let last = performance.now();
+          const end = last + ms;
+          const tick = (now) => {
+            intervals.push(now - last);
+            last = now;
+            if (now < end) requestAnimationFrame(tick);
+            else resolve();
+          };
+          requestAnimationFrame(tick);
+        });
+        return intervals.slice(1);
+      };
+      window.scenes = Object.keys(SCENES);
+      window.ready = true;
+    </script>
+  </head>
+  <body>
+    <div id="stage"></div>
+  </body>
+</html>

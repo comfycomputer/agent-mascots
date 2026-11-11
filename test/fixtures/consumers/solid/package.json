@@ -1,0 +1,10 @@
+{
+  "name": "consumer-solid",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "agent-mascots": "*",
+    "solid-js": "1.9.18",
+    "typescript": "7.0.2"
+  }
+}

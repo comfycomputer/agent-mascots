@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Per-module consumer</title>
+    <script type="importmap">
+      {
+        "imports": {
+          "agent-mascots/core": "./node_modules/agent-mascots/dist/core.js",
+          "agent-mascots/shapes/": "./node_modules/agent-mascots/dist/shapes/",
+          "agent-mascots/accessories/": "./node_modules/agent-mascots/dist/accessories/"
+        }
+      }
+    </script>
+    <script type="module">
+      import 'agent-mascots/core';
+      import 'agent-mascots/shapes/gem.js';
+      import 'agent-mascots/accessories/antenna.js';
+    </script>
+  </head>
+  <body>
+    <agent-mascot id="gem" shape="gem" accessories="antenna" size="160"></agent-mascot>
+    <agent-mascot id="missing" shape="ghost" size="160"></agent-mascot>
+  </body>
+</html>

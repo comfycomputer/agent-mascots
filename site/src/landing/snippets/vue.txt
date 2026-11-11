@@ -1,0 +1,24 @@
+<script setup>
+import 'agent-mascots';
+import { ref } from 'vue';
+
+const mood = ref('thinking');
+</script>
+
+<template>
+  <agent-mascot
+    shape="cloud"
+    :mood="mood"
+    @mascot-poke="mood = 'success'"
+  />
+</template>
+
+<!-- vite.config.js: mark the tag
+vue({
+  template: {
+    compilerOptions: {
+      isCustomElement: (tag) =>
+        tag === 'agent-mascot',
+    },
+  },
+}) -->

@@ -1,0 +1,13 @@
+{
+  // For editors. It sits here, not beside vite.config.ts, because SvelteKit checks a tsconfig.json
+  // there with TypeScript's JS API, which TypeScript 7 doesn't ship. SvelteKit writes the base.
+  "extends": "../node_modules/$app/tsconfig.json",
+  "compilerOptions": {
+    "types": ["$app/types", "vite/client", "node"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": ["**/*.ts", "**/*.svelte", "../config.ts", "../vite.config.ts"]
+}

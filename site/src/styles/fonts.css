@@ -1,0 +1,49 @@
+/*
+ * Fonts are self-hosted subsets, OFL-1.1: the files are in site/fonts/, their licences in site/static/fonts/.
+ *
+ * The fallbacks are sized from the fonts' own metrics, so swapping in the webfont doesn't move
+ * text. Times New Roman and Liberation Serif share metrics, as do Arial and Liberation Sans, and
+ * Courier New and Liberation Mono, so one set of numbers covers macOS, Windows and Linux.
+ */
+@font-face {
+  font-family: "Fraunces";
+  src: url("../../fonts/fraunces.woff2") format("woff2");
+  font-weight: 500 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Recursive";
+  src: url("../../fonts/recursive.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold");
+  size-adjust: 102.18%;
+  ascent-override: 95.71%;
+  descent-override: 24.96%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Recursive Fallback";
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans");
+  size-adjust: 112.51%;
+  ascent-override: 84.44%;
+  descent-override: 22.22%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Recursive Mono Fallback";
+  src: local("Courier New"), local("CourierNewPSMT"), local("Liberation Mono");
+  size-adjust: 100%;
+  ascent-override: 95%;
+  descent-override: 25%;
+  line-gap-override: 0%;
+}

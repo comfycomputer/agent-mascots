@@ -1,0 +1,16 @@
+import 'agent-mascots';
+import { createSignal } from 'solid-js';
+
+export function Agent() {
+  const [mood, setMood] =
+    createSignal('thinking');
+  return (
+    <agent-mascot
+      shape="cloud"
+      mood={mood()}
+      on:mascot-poke={() =>
+        setMood('success')
+      }
+    />
+  );
+}

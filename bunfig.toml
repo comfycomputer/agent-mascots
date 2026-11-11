@@ -1,0 +1,4 @@
+# `bun test` runs only the unit tests, as `bun run test` (Vitest) does. The Playwright specs in
+# test/browser and test/site run with `bun run test:browser` and `bun run test:site`.
+[test]
+root = "test/unit"

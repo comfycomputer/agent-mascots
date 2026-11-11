@@ -1,0 +1,6 @@
+body { margin: 0; font: 16px/1.5 system-ui, sans-serif; }
+#stage { display: grid; place-items: center; gap: 16px; min-height: 100vh; align-content: center; }
+agent-mascot { width: 200px; }
+nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+button { font: inherit; padding: 8px 12px; cursor: pointer; }
+button[aria-pressed="true"] { font-weight: 700; }

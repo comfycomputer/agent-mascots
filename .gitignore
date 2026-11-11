@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.dist-*/
+custom-elements.json
+site/metrics.json
+site/attributes.json
+playwright-report/
+test-results/
+test/fixtures/.tmp/
+*.log
+.DS_Store
+docs/media/review/
+.svelte-kit/
+__pycache__/
+.claude/scheduled_tasks.lock
+.claude/worktrees/

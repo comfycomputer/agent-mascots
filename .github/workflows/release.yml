@@ -1,0 +1,52 @@
+name: Release
+
+# Runs after CI passes on main. With changesets waiting in .changeset/, it opens or updates the
+# "Version Packages" pull request, which bumps the version and writes CHANGELOG.md. Merging that
+# pull request is the release: the next run publishes to npm, tags it and makes a GitHub release.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write # the version branch, the tag and the GitHub release
+  pull-requests: write # the "Version Packages" pull request
+  id-token: write # npm trusted publishing, which also adds provenance
+
+# One release at a time. A newer run waits, rather than cutting off a publish halfway.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  BUN_VERSION: 1.4.0
+
+jobs:
+  release:
+    name: Version or publish
+    # Only after a push to main whose CI passed, never after a pull request's.
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or later, newer than some Node 24 releases ship.
+      - run: npm install -g npm@latest
+      - run: bun install --frozen-lockfile
+      - uses: changesets/action@v2
+        with:
+          version-script: bun run changeset version
+          # Runs npm publish, so prepack builds and prepublishOnly runs scripts/check-release.mjs.
+          publish-script: bun run changeset publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

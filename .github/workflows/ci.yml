@@ -1,0 +1,139 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUN_VERSION: 1.4.0
+  NODE_VERSION: 26
+
+jobs:
+  checks:
+    name: Lint, types, unit tests, size
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      # Node stays for what it proves: the library imports safely there, and npm installs it.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run lint
+      - run: bun run site:prepare
+      - run: bun run typecheck
+      # `pretest` builds, and the size check reads that build.
+      - run: bun run test
+      - run: bun run size
+      - run: bun run site:build
+
+  browsers:
+    name: Browser tests (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      # Browsers are cached per Playwright version. The system libraries they need aren't, so a hit
+      # still installs those.
+      - id: playwright
+        run: echo "version=$(bun -e 'console.log(require("playwright/package.json").version)')" >> "$GITHUB_OUTPUT"
+      - id: browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-${{ matrix.browser }}
+      - if: steps.browsers.outputs.cache-hit != 'true'
+        run: bun --bun playwright install --with-deps ${{ matrix.browser }}
+      - if: steps.browsers.outputs.cache-hit == 'true'
+        run: bun --bun playwright install-deps ${{ matrix.browser }}
+      - run: bun run build
+      - run: bun run test:browser -- --project=${{ matrix.browser }}
+      # The site's own tests check the page, not the engine, so one browser covers them.
+      - if: matrix.browser == 'chromium'
+        run: bun run site:build
+      - if: matrix.browser == 'chromium'
+        run: bun run test:site -- --project=chromium
+
+  consumers:
+    name: Packed tarball in real consumers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      # Node stays for what it proves: the library imports safely there, and npm installs it.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - run: bun install --frozen-lockfile
+      # Browsers are cached per Playwright version. The system libraries they need aren't, so a hit
+      # still installs those.
+      - id: playwright
+        run: echo "version=$(bun -e 'console.log(require("playwright/package.json").version)')" >> "$GITHUB_OUTPUT"
+      - id: browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}-all
+      - if: steps.browsers.outputs.cache-hit != 'true'
+        run: bun --bun playwright install --with-deps chromium firefox webkit
+      - if: steps.browsers.outputs.cache-hit == 'true'
+        run: bun --bun playwright install-deps chromium firefox webkit
+      - run: bun run test:package
+      - run: bun run test:examples
+
+  # The site, on GitHub Pages at comfycomputer.github.io/agent-mascots. Only from main, and only
+  # once the checks and the browser tests, the site's own among them, have passed. In the
+  # repository's settings, Pages takes its source from GitHub Actions.
+  pages-build:
+    name: Build the site for Pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [checks, browsers]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run site:build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+
+  pages-deploy:
+    name: Deploy the site to Pages
+    needs: pages-build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # One deploy at a time, and a newer one waits rather than cutting this one off.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

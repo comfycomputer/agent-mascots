@@ -1,0 +1,18 @@
+// React 19. For the types, import
+// 'agent-mascots/jsx' once.
+import 'agent-mascots';
+import { useState } from 'react';
+
+export function Agent() {
+  const [mood, setMood] =
+    useState('thinking');
+  return (
+    <agent-mascot
+      shape="cloud"
+      mood={mood}
+      onmascot-poke={() =>
+        setMood('success')
+      }
+    />
+  );
+}

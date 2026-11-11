@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>agent-mascots: server-sent events</title>
+    <script type="module" src="/cdn.js"></script>
+    <style>
+      body { display: grid; place-items: center; min-height: 100vh; margin: 0; }
+      agent-mascot { width: 240px; }
+    </style>
+  </head>
+  <body>
+    <agent-mascot mood="idle"></agent-mascot>
+    <script type="module">
+      const MOODS = {
+        start: 'thinking',
+        tool: 'working',
+        blocked: 'waiting',
+        fail: 'error',
+        done: 'success',
+        idle: 'idle',
+      };
+
+      const mascot = document.querySelector('agent-mascot');
+      const events = new EventSource('/agent');
+
+      events.onmessage = ({ data }) => {
+        mascot.mood = MOODS[data] ?? 'idle';
+        // A stream that ends counts as dropped, and a dropped stream reconnects, which would
+        // start the agent again. So the page hangs up first.
+        if (data === 'done' || data === 'fail') events.close();
+      };
+      events.onerror = () => {
+        mascot.mood = 'error';
+      };
+    </script>
+  </body>
+</html>

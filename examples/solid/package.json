@@ -1,0 +1,16 @@
+{
+  "name": "agent-mascots-example-solid",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "solid-js": "1.9.18"
+  },
+  "devDependencies": {
+    "vite-plugin-solid": "2.11.15",
+    "vite": "8.3.5"
+  }
+}

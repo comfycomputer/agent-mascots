@@ -1,0 +1,670 @@
+/* Reset, type classes, layout and the shared components. */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/*
+ * House rule 1: only mascots move. Printed things change by hard cut, so nothing on the page can
+ * pick up a transition. Mascots keep theirs: the library's own styles sit in their shadow root.
+ */
+*:not(agent-mascot), *::before, *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+html {
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-text);
+  font-variation-settings: var(--v-text);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+h1, h2, h3, h4, p, ul, ol, pre, figure {
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font: inherit;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  font-variation-settings: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Focus only lands here from the skip link. */
+main:focus-visible {
+  outline: 0;
+}
+
+/* Hold each mascot's box until it upgrades. Give it a width where it's used. */
+agent-mascot:not(:defined) {
+  display: inline-block;
+  aspect-ratio: 1;
+  vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  agent-mascot {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Type */
+
+.t-label {
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-label);
+  line-height: 1.3;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+}
+
+kbd {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Layout */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link */
+
+.skip-link {
+  position: absolute;
+  z-index: 3;
+  top: var(--s-2);
+  left: var(--gutter);
+  padding: var(--s-2) var(--s-3);
+  border-radius: var(--r-1);
+  background: var(--text);
+  color: var(--on-text);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-label);
+}
+
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Nav */
+
+.site-header {
+  height: var(--nav-height);
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  height: 100%;
+  white-space: nowrap;
+}
+
+.site-nav a, .site-nav button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 40px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-nav a:hover, .site-nav button:hover, .site-nav__links a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.site-nav__home {
+  gap: var(--s-2);
+  font-weight: 600;
+}
+
+.site-nav__mascot {
+  width: 22px;
+}
+
+.site-nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+/* The GitHub mark, in place of the word: named by its aria-label. */
+.site-nav__icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-nav__icon .icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* A phone reaches the install command from the hero's install link. */
+@media (max-width: 640px) {
+  .site-nav__install {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .site-nav__wordmark {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .site-nav__links {
+    gap: var(--s-3);
+  }
+}
+
+/* Footer */
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  padding: var(--s-5) var(--gutter);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.site-footer a {
+  color: inherit;
+}
+
+/* Buttons. `.act` is the default; `summary.act` drops its marker. */
+
+.act {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  height: 32px;
+  padding: 0 var(--s-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-label);
+  line-height: 1;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+summary.act {
+  list-style: none;
+}
+
+summary.act::-webkit-details-marker {
+  display: none;
+}
+
+.act:not(:disabled):hover {
+  background: var(--surface);
+}
+
+.act--strong {
+  border: 0;
+  background: var(--text);
+  color: var(--on-text);
+}
+
+.act--strong:not(:disabled):hover {
+  background: color-mix(in srgb, var(--text) 85%, var(--bg));
+}
+
+.act--quiet {
+  border: 0;
+  background: none;
+}
+
+:is(.act, .act--quiet)[aria-pressed="true"] {
+  color: var(--accent);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.act:disabled {
+  border-style: dashed;
+  color: var(--muted);
+  cursor: default;
+}
+
+@media (pointer: coarse) {
+  .act {
+    height: 40px;
+  }
+}
+
+/* A real radio over a printed cell. Layout is the page's; these are the states. */
+
+.pick {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-1);
+  border-radius: var(--r-1);
+  color: var(--text);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-label);
+  cursor: pointer;
+}
+
+.pick input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.pick:hover {
+  background: var(--surface);
+}
+
+.pick:has(:checked), .pick[aria-pressed="true"] {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--text);
+}
+
+/* WebKit doesn't count a radio reached by arrow key as :focus-visible, so the group keeps track. */
+.pick:has(:focus-visible), [data-keys] .pick:has(:focus) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Segmented: picks side by side inside one outline. */
+
+.segmented {
+  display: inline-flex;
+  align-items: stretch;
+  padding: 1px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+}
+
+.segmented > label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  height: 28px;
+  padding: 0 10px;
+  border-radius: calc(var(--r-1) - 1px);
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-label);
+}
+
+.segmented > label:has(input:checked) {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--text);
+}
+
+/* The ring sits inside, so a group that scrolls sideways can't clip it. */
+.segmented > label:has(:focus-visible), .segmented[data-keys] > label:has(:focus) {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.segmented input:focus-visible { outline: 0; }
+
+/* Fields */
+
+input:is([type="text"], [type="number"], [type="search"], [type="url"]), input:not([type]) {
+  height: 32px;
+  padding: 0 var(--s-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: 13px;
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+input[aria-invalid="true"] {
+  border-color: var(--accent);
+}
+
+.swatch {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-1);
+  background: none;
+  cursor: pointer;
+  appearance: none;
+  overflow: hidden;
+}
+
+.swatch::-webkit-color-swatch-wrapper { padding: 0; }
+.swatch::-webkit-color-swatch { border: 0; border-radius: calc(var(--r-1) - 1px); }
+.swatch::-moz-color-swatch { border: 0; border-radius: calc(var(--r-1) - 1px); }
+
+/* A fader with an exact value beside it. See playground/controls.js. */
+
+.scrub {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 7ch;
+  align-items: center;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.scrub__rail {
+  position: relative;
+  display: block;
+  height: 32px;
+}
+
+.scrub__rail::before, .scrub__fill {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+}
+
+.scrub__rail::before {
+  right: 0;
+  background: var(--line-strong);
+}
+
+.scrub__fill {
+  background: var(--text);
+}
+
+.scrub__tick {
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 10px;
+  margin: -5px 0 0;
+  background: var(--muted);
+}
+
+.scrub input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: none;
+  appearance: none;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+.scrub input[type="range"]::-webkit-slider-runnable-track { height: 100%; background: none; }
+.scrub input[type="range"]::-moz-range-track { height: 100%; background: none; }
+
+.scrub input[type="range"]::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  margin-top: 9px;
+  border-radius: 50%;
+  background: var(--text);
+  appearance: none;
+}
+
+.scrub input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text);
+}
+
+.scrub input.scrub__value {
+  width: 100%;
+  text-align: right;
+  appearance: textfield;
+}
+
+.scrub__value::-webkit-outer-spin-button,
+.scrub__value::-webkit-inner-spin-button { appearance: none; }
+
+@media (pointer: coarse) {
+  .scrub__rail { height: 44px; }
+  .scrub input[type="range"]::-webkit-slider-thumb { margin-top: 15px; }
+}
+
+/* Install pill */
+
+.install-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  max-width: 100%;
+  height: 40px;
+  padding: 0 var(--s-4) 0 var(--s-3);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-code);
+  text-align: left;
+}
+
+a.install-pill {
+  text-decoration: none;
+}
+
+a.install-pill:hover code {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.install-pill code {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.install-pill__mascot {
+  flex: none;
+  width: 20px;
+}
+
+.install-pill__note {
+  flex: none;
+  color: var(--muted);
+  font-size: var(--t-small);
+}
+
+/* A phone can't hold the note on the pill's line, so it hangs just under the pill. */
+@media (max-width: 480px) {
+  .install-pill {
+    position: relative;
+    gap: var(--s-2);
+    margin-bottom: 1.5em;
+  }
+
+  .install-pill .install-pill__note {
+    position: absolute;
+    top: 100%;
+    left: var(--s-3);
+    padding-top: var(--s-1);
+    white-space: nowrap;
+  }
+}
+
+/* Code panels */
+
+.code-panel {
+  max-width: 100%;
+  padding: var(--s-4);
+  overflow-x: auto;
+  border-radius: var(--r-1);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--t-code);
+  line-height: 1.55;
+  tab-size: 2;
+}
+
+/* Tabs: see tabs.js. */
+
+.tabs__list {
+  display: flex;
+  gap: var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.tabs__list [role="tab"] {
+  height: 36px;
+  padding: 0;
+  color: var(--muted);
+  font-family: var(--f-mono);
+  font-variation-settings: var(--v-mono);
+  font-size: var(--t-label);
+  white-space: nowrap;
+}
+
+.tabs__list [role="tab"]:hover {
+  color: var(--text);
+}
+
+.tabs__list [aria-selected="true"] {
+  color: var(--text);
+  box-shadow: inset 0 -2px 0 var(--text);
+}
+
+.tabs__list [role="tab"]:focus-visible {
+  outline-offset: -2px;
+}
+
+/* A real <select> that reads as text, for values inside a tag. */
+
+.text-select {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  background: none;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.text-select option {
+  background: var(--bg);
+  color: var(--text);
+}
+
+@media (forced-colors: active) {
+  .install-pill, .code-panel {
+    border: 1px solid CanvasText;
+  }
+
+  .tabs__list [aria-selected="true"], .pick:has(:checked), .pick[aria-pressed="true"],
+  .segmented > label:has(input:checked), :is(.act, .act--quiet)[aria-pressed="true"] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .scrub__rail::before, .scrub__fill, .scrub__tick {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}

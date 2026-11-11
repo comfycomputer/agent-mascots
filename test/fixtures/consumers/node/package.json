@@ -1,0 +1,10 @@
+{
+  "name": "consumer-node",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "agent-mascots": "*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}
