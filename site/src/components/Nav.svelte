@@ -19,7 +19,7 @@
 <header class="site-header">
   <nav class="site-nav t-label" aria-label="Main">
     <a class="site-nav__home" href={resolve('/')} aria-current={page === 'index' ? 'page' : undefined}>
-      <agent-mascot class="site-nav__mascot" detail="simple" track="window" color="var(--text)" accent="var(--accent)" role="presentation" {...look}></agent-mascot>
+      <agent-mascot class="site-nav__mascot" detail="simple" track="window" color="var(--text)" accent="var(--accent)" role="presentation" data-wears={page === 'index' ? 'face' : undefined} {...look}></agent-mascot>
       <span class="site-nav__wordmark">agent-mascots</span>
     </a>
     <ul class="site-nav__links">

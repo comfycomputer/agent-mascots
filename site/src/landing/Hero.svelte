@@ -89,7 +89,7 @@
         <Stars href={githubHref} />
       </a>
       <div class="use__command hero__install">
-        <agent-mascot id="install-mascot" mood={copying ?? 'waiting'} detail="simple" track="none" color="var(--text)" accent="var(--accent)" aria-hidden="true" {...face}></agent-mascot>
+        <agent-mascot id="install-mascot" mood={copying ?? 'waiting'} detail="simple" track="none" color="var(--text)" accent="var(--accent)" aria-hidden="true" data-wears="face" {...face}></agent-mascot>
         <code>{INSTALL_COMMAND}</code>
         <CopyButton
           class="act hero__copy"
@@ -112,6 +112,7 @@
     <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
     <agent-mascot
       class="hero__mascot"
+      data-wears="look"
       {...look}
       detail="full"
       track="window"
@@ -135,7 +136,7 @@
         }}
       >
         {#snippet option({ value })}
-          <agent-mascot class="pick__mascot" mood={value} detail="simple" motion="0" track="none" aria-hidden="true" {...faceAndTone}></agent-mascot>
+          <agent-mascot class="pick__mascot" mood={value} detail="simple" motion="0" track="none" aria-hidden="true" data-wears="face-tone" {...faceAndTone}></agent-mascot>
           <span>{value}</span>
         {/snippet}
       </RadioGroup>

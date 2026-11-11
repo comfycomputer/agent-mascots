@@ -10,7 +10,7 @@
 
 <CopyButton class="act act--strong use__snippet-copy" aria-label="Copy this snippet" {text} onmood={(mood) => (acting = mood)}>
   {#snippet children(state)}
-    <agent-mascot class="act__mascot" mood={acting ?? 'idle'} detail="simple" track="none" color="var(--on-text)" accent="var(--accent)" role="presentation" {...face}></agent-mascot>
+    <agent-mascot class="act__mascot" mood={acting ?? 'idle'} detail="simple" track="none" color="var(--on-text)" accent="var(--accent)" role="presentation" data-wears="face" {...face}></agent-mascot>
     <span class="label" data-copy-label>{state ?? 'copy'}</span>
   {/snippet}
 </CopyButton>

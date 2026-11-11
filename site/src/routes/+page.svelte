@@ -1,8 +1,8 @@
 <!--
   The landing page: the hero, the preset gallery and how to use it. The page is written in the
-  first preset, so it has a look before any script; once it runs, a visit gets a random one, or a
-  share link's mascot. Picking a card puts its look on the hero, tints the page to match, and
-  points the playground button at it.
+  first preset, so it has a look before any script. With scripts, a visit gets a random one, picked
+  by an inline script before the page draws (first-look.ts), or a share link's mascot. Picking a
+  card puts its look on the hero, tints the page to match, and points the playground button at it.
 -->
 <script lang="ts">
   import fraunces from '../../fonts/fraunces.woff2?url';
@@ -11,6 +11,7 @@
   import Head from '../components/Head.svelte';
   import Nav from '../components/Nav.svelte';
   import Hero from '../landing/Hero.svelte';
+  import { FIRST_LOOK_SCRIPT } from '../landing/first-look';
   import { faceOf, playgroundLink, type Look } from '../landing/look';
   import Presets from '../landing/Presets.svelte';
   import { PRESETS, type Preset } from '../landing/presets';
@@ -18,8 +19,10 @@
 
   const [FIRST] = PRESETS as [Preset, ...Preset[]];
 
-  /** The preset the hero last wore. */
-  let worn = $state.raw<Preset>(FIRST);
+  /** The preset the hero last wore. The first is the one the inline script picked, if it ran. */
+  let worn = $state.raw<Preset>(
+    (typeof document !== 'undefined' && PRESETS.find((preset) => preset.name === document.documentElement.dataset.preset)) || FIRST,
+  );
   /** A share link's look, which isn't a preset. */
   let cameo = $state.raw<Look | null>(null);
   /** The share link's hash, when the look came from one. */
@@ -47,11 +50,8 @@
   }
 
   onMount(() => {
-    // A different named preset each visit. A link brings its own look, or names a section, so it is left alone.
-    if (location.hash.length <= 1) {
-      wear(PRESETS[Math.floor(Math.random() * PRESETS.length)]!);
-      return;
-    }
+    // The inline script already picked this visit's preset. A link brings its own look, or names a section.
+    if (location.hash.length <= 1) return;
     void import('../landing/cameo').then(async ({ readCameo }) => {
       const link = readCameo(location.hash);
       if (!link) return;
@@ -70,6 +70,8 @@
 <svelte:head>
   <!-- The headline face: only this page uses it above the fold. -->
   <link rel="preload" href={fraunces} as="font" type="font/woff2" crossorigin="anonymous" />
+  <!-- Picks this visit's preset before the body is parsed. Built from the presets, nothing a visitor sends. -->
+  {@html FIRST_LOOK_SCRIPT}
 </svelte:head>
 <Head title="agent-mascots" description="An animated web component that shows what your AI agent is doing." path="" />
 <Nav page="index" skipLabel="Skip to content" look={face} />

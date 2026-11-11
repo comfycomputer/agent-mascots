@@ -379,6 +379,39 @@ for (const [width, height, limit] of [[1440, 900, 3600], [390, 844, 5200]] as co
   });
 }
 
+test('the mascots wear the visit\'s preset from the start, not the first one', async ({ page }) => {
+  // What the mascots wear when the library defines the element, which is when they first draw.
+  await page.addInitScript(() => {
+    const define = customElements.define.bind(customElements);
+    customElements.define = (name, ...rest) => {
+      if (name === 'agent-mascot') {
+        (window as unknown as { atDefine: unknown }).atDefine = Object.fromEntries(
+          [
+            ['hero', '.hero__mascot'],
+            ['nav', '.site-nav__mascot'],
+          ].map(([key, selector]) => {
+            const mascot = document.querySelector(selector!)!;
+            return [key, Object.fromEntries(['shape', 'color', 'eye-shape'].map((attr) => [attr, mascot.getAttribute(attr)]))];
+          }),
+        );
+      }
+      return define(name, ...rest);
+    };
+  });
+  // Random, so a few visits: each draws the preset the page settles on, whichever it is.
+  for (let visit = 0; visit < 3; visit++) {
+    await mounted(page);
+    const [name] = await pressedName(page);
+    const preset = PRESETS.find((p) => p.name === name)!;
+    const atDefine = await page.evaluate(() => (window as unknown as { atDefine: unknown }).atDefine);
+    expect(atDefine).toEqual({
+      hero: { shape: preset.attrs.shape, color: preset.attrs.color, 'eye-shape': preset.attrs['eye-shape'] ?? null },
+      nav: { shape: preset.attrs.shape, color: 'var(--text)', 'eye-shape': preset.attrs['eye-shape'] ?? null },
+    });
+    await expect(page.locator('html')).toHaveCSS('--g1', hexToRgb(preset.ground[0]));
+  }
+});
+
 test('without JS the headline, the install command, the presets and the code remain readable', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   const page = await context.newPage();

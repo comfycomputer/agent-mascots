@@ -6,9 +6,9 @@ import { resolve } from '$app/paths';
 export type Look = Readonly<Record<string, string>>;
 
 /** The face: the nav, install and copy mascots wear this and keep their own ink. */
-const FACE = ['shape', 'eye-shape'];
+export const FACE = ['shape', 'eye-shape'];
 /** The face and its colours: the mood picker's mascots wear this. */
-const FACE_AND_TONE = [...FACE, 'color', 'accent'];
+export const FACE_AND_TONE = [...FACE, 'color', 'accent'];
 
 const only = (look: Look, names: string[]): Look => Object.fromEntries(names.filter((name) => name in look).map((name) => [name, look[name]!]));
 
