@@ -6,7 +6,9 @@
 // EXAMPLES_PORT sets the first port. Run `bun run build` first.
 // oxlint-disable no-console -- this script's output is its report
 import { execFile, spawn } from 'node:child_process';
-import { join } from 'node:path';
+import { readFile } from 'node:fs/promises';
+import { createServer } from 'node:http';
+import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import { chromium } from 'playwright';
@@ -20,10 +22,28 @@ const firstPort = Number(process.env.EXAMPLES_PORT ?? 41900);
 
 async function waitForServer(url) {
   for (let tries = 0; tries < 120; tries += 1) {
-    if (await fetch(url).then((response) => response.ok, () => false)) return;
+    // A short timeout on each try, so a server that accepts and then stalls can't hold the wait.
+    if (await fetch(url, { signal: AbortSignal.timeout(2000) }).then((response) => response.ok, () => false)) return;
     await new Promise((done) => setTimeout(done, 250));
   }
   throw new Error(`no server at ${url}`);
+}
+
+const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.map': 'application/json' };
+
+/** Serves the repo's files, read-only, as the plain HTML example expects: `/dist/cdn.js` and so on. */
+function serveFiles(port) {
+  const server = createServer(async (request, response) => {
+    let path = normalize(decodeURIComponent(new URL(request.url ?? '/', 'http://localhost').pathname));
+    if (path.endsWith('/')) path += 'index.html';
+    try {
+      const body = await readFile(join(root, path));
+      response.writeHead(200, { 'content-type': TYPES[extname(path)] ?? 'application/octet-stream' }).end(body);
+    } catch {
+      response.writeHead(404).end();
+    }
+  });
+  return new Promise((ready) => server.listen(port, '127.0.0.1', () => ready(server)));
 }
 
 async function check(browser, url) {
@@ -53,14 +73,18 @@ for (const [index, name] of names.entries()) {
   const cwd = html ? root : join(root, 'examples', name);
   const url = `http://127.0.0.1:${port}/${html ? 'examples/html/' : ''}`;
   let server;
+  let staticServer;
   try {
     if (!html) {
       await run('bun', ['--bun', 'vite', 'build', '--outDir', join(root, `.dist-example-${name}`), '--emptyOutDir'], { cwd });
     }
+    // The plain HTML example needs only its page and dist/cdn.js, so it's served as plain files.
+    // A Vite dev server at the repo root would scan every HTML file in the repo first, which on a
+    // cold CI runner can outlast the wait.
+    if (html) staticServer = await serveFiles(port);
     // A framework example serves the build it just made: a cold dev server pre-bundles the
     // framework first, which can outlast the wait on a CI runner.
-    const serve = html ? [] : ['preview', '--outDir', join(root, `.dist-example-${name}`)];
-    server = spawn('bun', ['--bun', 'vite', ...serve, '--port', String(port), '--strictPort', '--host', '127.0.0.1'], { cwd, stdio: 'ignore', detached: true });
+    else server = spawn('bun', ['--bun', 'vite', 'preview', '--outDir', join(root, `.dist-example-${name}`), '--port', String(port), '--strictPort', '--host', '127.0.0.1'], { cwd, stdio: 'ignore', detached: true });
     await waitForServer(url);
     await check(browser, url);
     console.log(`ok   ${name}`);
@@ -68,6 +92,7 @@ for (const [index, name] of names.entries()) {
     failed += 1;
     console.error(`FAIL ${name}: ${error.message}`);
   } finally {
+    staticServer?.close();
     if (server) {
       try {
         process.kill(-server.pid);
