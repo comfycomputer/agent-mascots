@@ -1,11 +1,10 @@
-// A frame-stepped browser stage for the README and social media. Pages load the built library,
-// the site fonts or the built site through request interception, so no port is opened. Time comes from a fake
+// A frame-stepped browser stage for the README and social media. Pages load the built library
+// and the site fonts through request interception, so no port is opened. Time comes from a fake
 // clock and a seeded random stream, so every run renders the same frames.
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
-import { SITE_BASE } from '../../site/config.ts';
 
 export const root = fileURLToPath(new URL('../..', import.meta.url));
 /** Point this at a copy of dist/ to capture a snapshot while something else rebuilds. */
@@ -22,8 +21,6 @@ const TYPES = {
   '.svg': 'image/svg+xml',
   '.webp': 'image/webp',
 };
-/** A copy of the built site to capture from: `bun run site:build` writes it. */
-export const site = process.env.MEDIA_SITE ?? join(root, 'site/dist');
 
 /** 25 frames per second. */
 export const FRAME_MS = 40;
@@ -88,39 +85,6 @@ async function freeze(page, seed) {
     Math.random = () => (value = (value * 16807) % 2147483647) / 2147483647;
   }, seed);
   await page.clock.install({ time: 0 });
-}
-
-/**
- * Open a page of the built site, `/` or `/playground`, as a visitor would see it, with the same
- * seeded randomness and fake clock as a stage, so the landing page always wears the same preset.
- */
-export async function openSite({ width, height, scale = 1, path = '/', seed = 7 }) {
-  const page = await (await launch()).newPage({ viewport: { width, height }, deviceScaleFactor: scale });
-  const errors = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  page.on('console', (message) => {
-    if (message.type() === 'error' || message.type() === 'warning') errors.push(message.text());
-  });
-  await freeze(page, seed);
-  // No star count from GitHub: what it says changes, and every run should render the same frames.
-  // An empty answer, rather than none, so the page has no failed request to log.
-  await page.route('https://api.github.com/**', (route) => route.fulfill({ json: {}, headers: { 'access-control-allow-origin': '*' } }));
-  await page.route(`${ORIGIN}/**`, async (route) => {
-    // The site's addresses are under its path on GitHub Pages; the build's files aren't.
-    const pathname = new URL(route.request().url()).pathname.slice(SITE_BASE.length);
-    const file = join(site, pathname === '/' ? 'index.html' : extname(pathname) ? pathname : `${pathname}.html`);
-    try {
-      return await route.fulfill({ contentType: TYPES[extname(file)] ?? 'application/octet-stream', body: await readFile(file) });
-    } catch {
-      return route.fulfill({ status: 404 });
-    }
-  });
-  await page.goto(`${ORIGIN}${SITE_BASE}${path}`);
-  await page.waitForFunction(() => customElements.get('agent-mascot'));
-  await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(150);
-  await page.clock.pauseAt(60_000);
-  return { page, errors };
 }
 
 /** Advance the page by `ms`, moving CSS transitions in step with the fake clock. */

@@ -1,17 +1,17 @@
-// Renders the frames behind docs/media and site/static from the real component and the real site.
-// Run after `bun run site:build`, because the share image comes from the built landing page, then
-// run encode.py over the same work folder:
+// Renders the frames behind docs/media and site/static from the real component. Run after
+// `bun run site:prepare`, which builds the library and writes site/metrics.json, then run
+// encode.py over the same work folder:
 //
 //   bun scripts/media/capture.mjs [banner moods materials tracking shapes social icons]
 //   python3 scripts/media/encode.py
 //
-// MEDIA_WORK sets the work folder, MEDIA_DIST a copy of dist/ to capture from, and MEDIA_SITE a
-// copy of the built site.
+// MEDIA_WORK sets the work folder, and MEDIA_DIST a copy of dist/ to capture from.
 // oxlint-disable no-console -- this script's output is its report
 import { mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { FRAME_MS, advance, closeBrowser, openSite, openStage, root, saveFile, saveFrame, shot } from './stage.mjs';
+import { FRAME_MS, advance, closeBrowser, openStage, root, saveFile, saveFrame, shot } from './stage.mjs';
+import { renderCover } from './thumbnail.mjs';
 
 const work = process.env.MEDIA_WORK ?? join(tmpdir(), 'agent-mascots-media');
 const metrics = JSON.parse(await readFile(join(root, 'site/metrics.json'), 'utf8'));
@@ -75,18 +75,6 @@ async function captureBanner() {
   await page.close();
   console.log('banner written');
 }
-
-/* ---------- the landing page ---------- */
-
-/** The landing page, settled after its entrance, with its mood walk stopped. */
-async function openLanding(viewport, scale) {
-  const { page, errors } = await openSite({ ...viewport, scale });
-  await advance(page, 3000);
-  return { page, errors };
-}
-
-const pickMood = (page, mood) =>
-  page.evaluate((value) => document.querySelector(`#hero-moods input[value="${value}"]`).click(), mood);
 
 /* ---------- moods ---------- */
 
@@ -253,15 +241,9 @@ async function captureShapes() {
 
 /* ---------- social ---------- */
 
-/** The site's share image: the top of the landing page. */
+/** The site's share image: the cover in its og layout, which thumbnail.mjs draws. */
 async function captureSocial() {
-  const viewport = { width: 1200, height: 630 };
-  const { page, errors } = await openLanding(viewport, 1);
-  await pickMood(page, 'idle');
-  await advance(page, 1000);
-  await saveFile(join(root, 'site/static/og.png'), await shot(page, { x: 0, y: 0, ...viewport }));
-  assertClean(errors, 'social');
-  await page.close();
+  await renderCover('og', join(root, 'site/static/og.png'));
   console.log('social written');
 }
 
