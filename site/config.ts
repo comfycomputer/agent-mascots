@@ -11,7 +11,7 @@ export const SITE_URL = 'https://comfycomputer.github.io/agent-mascots';
 export const SITE_BASE = new URL(SITE_URL).pathname.replace(/\/$/, '');
 
 /** False prints "Not on npm yet" by the install command. Pages must also hide any CDN snippet. */
-export const NPM_PUBLISHED: boolean = false;
+export const NPM_PUBLISHED: boolean = true;
 
 export const INSTALL_COMMAND = 'npm install @comfycomputer/agent-mascots';
 export const CDN_URL = 'https://cdn.jsdelivr.net/npm/@comfycomputer/agent-mascots/dist/cdn.js';

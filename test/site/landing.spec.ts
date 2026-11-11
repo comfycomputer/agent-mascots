@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Page } from '@playwright/test';
-import { SITE_BASE } from '../../site/config.ts';
+import { NPM_PUBLISHED, SITE_BASE, scriptSrc } from '../../site/config.ts';
 import { STARS_API, expect, test } from './fixtures';
 import { PRESETS } from '../../site/src/landing/presets.ts';
 
@@ -194,9 +194,10 @@ test.describe('usage', () => {
     }
   });
 
-  test('the CDN snippet stays hidden until the package is published', async ({ page }) => {
+  test('the CDN snippet shows once the package is published, and not before', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('main')).not.toContainText('jsdelivr');
+    if (NPM_PUBLISHED) await expect(page.locator('main')).toContainText('jsdelivr');
+    else await expect(page.locator('main')).not.toContainText('jsdelivr');
     await expect(page.locator('main')).not.toContainText('Until the first release');
   });
 
@@ -264,7 +265,8 @@ test.describe('usage', () => {
     await page.goto('/');
     const sample = await page.locator('#use-html pre').textContent();
     expect(sample).not.toContain("import '@comfycomputer/agent-mascots'");
-    expect(sample).toContain('./node_modules/@comfycomputer/agent-mascots/dist/cdn.js');
+    // The CDN once the package is on npm, a local install's copy before that.
+    expect(sample).toContain(scriptSrc());
   });
 
   test('a snippet copies exactly what it shows', async ({ page, browserName, context }) => {
