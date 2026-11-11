@@ -35,9 +35,9 @@ async function writeMeta() {
 /* ---------- banner ---------- */
 
 const BANNER = { width: 1280, height: 400 };
-const BANNER_CARD = 92;
-/** Rows and columns enough to cover the banner once the grid is turned. */
-const BANNER_GRID = { rows: 9, columns: 20 };
+const BANNER_CARD = 116;
+/** Just enough to cover the banner once the grid is turned, so each preset shows once. */
+const BANNER_GRID = { rows: 5, columns: 12 };
 
 /**
  * The README's banner: the name, large, over the landing page's preset pictures in a grid turned a
@@ -49,9 +49,11 @@ async function captureBanner() {
   const names = (await readdir(dir)).filter((name) => name.endsWith('.webp')).toSorted();
   const pictures = await Promise.all(names.map(async (name) => `data:image/webp;base64,${(await readFile(join(dir, name))).toString('base64')}`));
   const { rows, columns } = BANNER_GRID;
-  // Steps of 11 along a row and 7 down a column: 11 shares no factor with the 30 presets, so no
-  // row repeats one, and neighbours above and below differ too.
-  const cards = Array.from({ length: rows * columns }, (_, i) => pictures[((i % columns) * 11 + Math.floor(i / columns) * 7) % pictures.length]);
+  // Every preset once, never twice. Steps of 7 through the list (a count that 7 divides would repeat),
+  // so presets written next to each other in presets.ts land apart.
+  if (pictures.length < rows * columns) throw new Error(`the banner needs ${rows * columns} presets, and there are ${pictures.length}`);
+  const cards = Array.from({ length: rows * columns }, (_, i) => pictures[(i * 7) % pictures.length]);
+  if (new Set(cards).size !== cards.length) throw new Error('the banner shows a preset twice');
   const css = `
     body { background: transparent; }
     .banner { position: relative; width: ${BANNER.width}px; height: ${BANNER.height}px; overflow: hidden; border-radius: 24px; background: #FAF8F4; }
