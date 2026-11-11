@@ -4,7 +4,7 @@
 // The page may only run a few full-detail mascots (MAX_FULL_DETAIL in lib/limits.ts), so this is one more,
 // and it is `hidden`, so it does no per-frame work, between pictures.
 
-import { MASCOT_EYE_SHAPES, MASCOT_SHAPES } from 'agent-mascots';
+import { MASCOT_EYE_SHAPES, MASCOT_SHAPES } from '@comfycomputer/agent-mascots';
 import { blobOf, frameOf, nextFrame, paint, stylesOf, whenIdle } from '../lib/snapshot';
 import type { Preset } from './presets';
 

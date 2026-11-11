@@ -6,7 +6,7 @@
 -->
 <script lang="ts">
   import { resolve } from '$app/paths';
-  import { MASCOT_MOODS } from 'agent-mascots';
+  import { MASCOT_MOODS } from '@comfycomputer/agent-mascots';
   import CopyButton from '../components/CopyButton.svelte';
   import Icon from '../components/Icon.svelte';
   import RadioGroup from '../components/RadioGroup.svelte';
@@ -370,9 +370,17 @@
 
     .hero__install {
       width: 100%;
+      height: auto;
+      min-height: 56px;
       gap: var(--s-2);
+      padding-block: var(--s-2);
       padding-left: var(--s-3);
       font-size: var(--t-code);
+    }
+
+    /* The scoped name is too long for one line on a phone: it breaks after `install`, whole. */
+    .hero__install code {
+      white-space: normal;
     }
 
     .hero__moods-wrap :global(.hero__moods) {

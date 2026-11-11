@@ -203,12 +203,12 @@ test.describe('usage', () => {
   test('the install command has its own copy button', async ({ page, browserName, context }) => {
     await page.goto('/');
     const copy = page.getByRole('button', { name: 'Copy the install command' });
-    await expect(copy).toHaveAttribute('data-copy', 'npm install agent-mascots');
-    await expect(page.locator('#install .use__command code')).toHaveText('npm install agent-mascots');
+    await expect(copy).toHaveAttribute('data-copy', 'npm install @comfycomputer/agent-mascots');
+    await expect(page.locator('#install .use__command code')).toHaveText('npm install @comfycomputer/agent-mascots');
     if (browserName !== 'chromium') return;
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     await copy.click();
-    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe('npm install agent-mascots');
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe('npm install @comfycomputer/agent-mascots');
     await expect(copy.locator('.icon--copied')).toBeVisible();
   });
 
@@ -228,8 +228,8 @@ test.describe('usage', () => {
   test('the hero stacks GitHub, the command, then docs and the playground side by side', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
-    await expect(page.locator('main code', { hasText: 'npm install agent-mascots' })).toHaveCount(1);
-    await expect(page.locator('#install .hero__install')).toContainText('npm install agent-mascots');
+    await expect(page.locator('main code', { hasText: 'npm install @comfycomputer/agent-mascots' })).toHaveCount(1);
+    await expect(page.locator('#install .hero__install')).toContainText('npm install @comfycomputer/agent-mascots');
     const box = (selector: string) => page.locator(selector).boundingBox();
     const [github, command, docs, play] = await Promise.all(['#hero-github', '.hero__install', '#hero-docs', '#hero-play'].map(box));
     expect(github!.y + github!.height).toBeLessThan(command!.y);
@@ -263,8 +263,8 @@ test.describe('usage', () => {
   test('the plain HTML sample needs no bundler', async ({ page }) => {
     await page.goto('/');
     const sample = await page.locator('#use-html pre').textContent();
-    expect(sample).not.toContain("import 'agent-mascots'");
-    expect(sample).toContain('./node_modules/agent-mascots/dist/cdn.js');
+    expect(sample).not.toContain("import '@comfycomputer/agent-mascots'");
+    expect(sample).toContain('./node_modules/@comfycomputer/agent-mascots/dist/cdn.js');
   });
 
   test('a snippet copies exactly what it shows', async ({ page, browserName, context }) => {

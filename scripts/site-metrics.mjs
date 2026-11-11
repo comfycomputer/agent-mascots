@@ -70,7 +70,7 @@ const lists = {
   eyeShapes: [...library.MASCOT_EYE_SHAPES],
 };
 const counts = Object.fromEntries(Object.entries(lists).map(([key, list]) => [key, list.length]));
-const sized = { full: bytes('agent-mascots (full)'), core: bytes('agent-mascots/core'), cdn: bytes('agent-mascots/cdn') };
+const sized = { full: bytes('@comfycomputer/agent-mascots (full)'), core: bytes('@comfycomputer/agent-mascots/core'), cdn: bytes('@comfycomputer/agent-mascots/cdn') };
 
 const metrics = {
   version: pkg.version,

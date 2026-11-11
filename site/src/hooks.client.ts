@@ -1,7 +1,7 @@
 // Runs once, before any page hydrates: the element first, so every mascot the build wrote
 // upgrades, then the detail budget that watches them.
 
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 import type { ClientInit } from '@sveltejs/kit';
 import { detailStats, startDetailBudget } from './lib/detail-budget';
 

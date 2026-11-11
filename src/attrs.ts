@@ -109,7 +109,7 @@ function shape(raw: string | null): string {
   // Inline, so the CDN build's removal of `warnOnce` calls takes the strings with it.
   warnOnce(
     (MASCOT_SHAPES as readonly string[]).includes(raw)
-      ? `shape "${raw}" is not loaded; import agent-mascots/shapes/${raw}`
+      ? `shape "${raw}" is not loaded; import @comfycomputer/agent-mascots/shapes/${raw}`
       : `unknown shape "${raw}"`,
   );
   return 'blob';

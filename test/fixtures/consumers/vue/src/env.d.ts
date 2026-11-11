@@ -1,1 +1,1 @@
-import 'agent-mascots/jsx';
+import '@comfycomputer/agent-mascots/jsx';

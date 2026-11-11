@@ -1,5 +1,5 @@
 {
-  "name": "agent-mascots",
+  "name": "@comfycomputer/agent-mascots",
   "version": "0.1.0",
   "description": "Animated mascots that show what your AI agent is doing. One dependency-free web component.",
   "license": "MIT",
@@ -11,6 +11,9 @@
   "homepage": "https://comfycomputer.github.io/agent-mascots",
   "bugs": {
     "url": "https://github.com/comfycomputer/agent-mascots/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "type": "module",
   "keywords": [

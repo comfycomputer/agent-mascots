@@ -1,5 +1,5 @@
 // External so the page can run under a CSP with no inline scripts.
-import { MASCOT_MOODS, registerShape } from './node_modules/agent-mascots/dist/cdn.js';
+import { MASCOT_MOODS, registerShape } from './node_modules/@comfycomputer/agent-mascots/dist/cdn.js';
 
 registerShape('fixture-kite', {
   path: 'M120 50L180 120L120 190L60 120Z',

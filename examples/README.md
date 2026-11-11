@@ -14,6 +14,6 @@ pokes, and eyes that follow the pointer across the page.
 
 Run `bun install && bun run build` in the repo root first. The examples use that local build
 through an alias in each Vite config, so to use one as a starting point, remove the alias and add
-`agent-mascots` as a dependency.
+`@comfycomputer/agent-mascots` as a dependency.
 
 `bun run test:examples` runs all five in a real browser.

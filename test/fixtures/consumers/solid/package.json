@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "agent-mascots": "*",
+    "@comfycomputer/agent-mascots": "*",
     "solid-js": "1.9.18",
     "typescript": "7.0.2"
   }

@@ -9,30 +9,30 @@ for (const name of ['HTMLElement', 'window', 'document', 'customElements']) {
   assert(!(name in globalThis), `${name} should not exist in Node`);
 }
 
-const main = await import('agent-mascots');
+const main = await import('@comfycomputer/agent-mascots');
 assert.equal(typeof main.registerShape, 'function');
 assert.equal(typeof main.AgentMascot, 'function');
 assert.equal(main.MASCOT_SHAPES.length, 16);
 assert.equal(main.MASCOT_ACCESSORIES.length, 24);
 
 const entries = [
-  'agent-mascots/core',
-  'agent-mascots/cdn',
-  'agent-mascots/jsx',
-  ...main.MASCOT_SHAPES.map((name) => `agent-mascots/shapes/${name}`),
-  ...main.MASCOT_ACCESSORIES.map((name) => `agent-mascots/accessories/${name}`),
+  '@comfycomputer/agent-mascots/core',
+  '@comfycomputer/agent-mascots/cdn',
+  '@comfycomputer/agent-mascots/jsx',
+  ...main.MASCOT_SHAPES.map((name) => `@comfycomputer/agent-mascots/shapes/${name}`),
+  ...main.MASCOT_ACCESSORIES.map((name) => `@comfycomputer/agent-mascots/accessories/${name}`),
 ];
 for (const entry of entries) await import(entry);
 
 const require = createRequire(import.meta.url);
-assert.equal(typeof require('agent-mascots').registerShape, 'function');
+assert.equal(typeof require('@comfycomputer/agent-mascots').registerShape, 'function');
 
-const { default: manifest } = await import('agent-mascots/custom-elements.json', {
+const { default: manifest } = await import('@comfycomputer/agent-mascots/custom-elements.json', {
   with: { type: 'json' },
 });
 assert.equal(manifest.schemaVersion, '1.0.0');
 
-await assert.rejects(import('agent-mascots/dist/element.js'), {
+await assert.rejects(import('@comfycomputer/agent-mascots/dist/element.js'), {
   code: 'ERR_PACKAGE_PATH_NOT_EXPORTED',
 });
 

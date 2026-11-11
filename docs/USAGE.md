@@ -20,15 +20,15 @@ attribute, property, method, event and CSS hook, see the [API reference](API.md)
 Load the script from a CDN and add the tag:
 
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/npm/agent-mascots/dist/cdn.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@comfycomputer/agent-mascots/dist/cdn.js"></script>
 
 <agent-mascot shape="cloud" material="frost" mood="thinking"></agent-mascot>
 ```
 
-Or, with a bundler, install the package and import `agent-mascots`:
+Or, with a bundler, install the package and import `@comfycomputer/agent-mascots`:
 
 ```sh
-npm install agent-mascots
+npm install @comfycomputer/agent-mascots
 ```
 
 Clicking a mascot pokes it: it squashes, winks and fires a `mascot-poke` event.
@@ -39,7 +39,7 @@ Clicking a mascot pokes it: it squashes, winks and fires a `mascot-poke` event.
 
 ```jsx
 import { useState } from 'react';
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 
 export function Agent() {
   const [mood, setMood] = useState('thinking');
@@ -55,7 +55,7 @@ there instead.
 ```vue
 <script setup>
 import { ref } from 'vue';
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 
 const mood = ref('thinking');
 </script>
@@ -82,7 +82,7 @@ export default {
 
 ```svelte
 <script>
-  import 'agent-mascots';
+  import '@comfycomputer/agent-mascots';
 
   let mood = $state('thinking');
 </script>
@@ -108,7 +108,7 @@ To get types for the element in JSX and templates, import them once, for example
 file. This adds no code to your bundle, and only affects the frameworks you have installed.
 
 ```ts
-import 'agent-mascots/jsx';
+import '@comfycomputer/agent-mascots/jsx';
 ```
 
 ## Moods
@@ -227,7 +227,7 @@ and throws a `TypeError` if it's malformed, so a bad path can't produce a clippe
 mascot.
 
 ```js
-import { registerShape } from 'agent-mascots';
+import { registerShape } from '@comfycomputer/agent-mascots';
 
 registerShape('kite', {
   path: 'M120 50L180 120L120 190L60 120Z',
@@ -313,26 +313,26 @@ Minified and gzipped, measured with `bun run size` on a production build:
 
 | Import | Contents | Size |
 |---|---|---|
-| `agent-mascots` | The element, every shape and every accessory | 28.2 kB |
-| `agent-mascots/core` | The element and one fallback shape, with no accessories | 18.7 kB |
-| `agent-mascots/cdn` | Everything in one file, for `<script type="module">` | 28.0 kB |
+| `@comfycomputer/agent-mascots` | The element, every shape and every accessory | 28.2 kB |
+| `@comfycomputer/agent-mascots/core` | The element and one fallback shape, with no accessories | 18.7 kB |
+| `@comfycomputer/agent-mascots/cdn` | Everything in one file, for `<script type="module">` | 28.0 kB |
 
-There are no runtime dependencies. To ship less, import `agent-mascots/core` and add only the
+There are no runtime dependencies. To ship less, import `@comfycomputer/agent-mascots/core` and add only the
 shapes and accessories you use. If a mascot uses a shape that hasn't loaded yet, it updates when the
 shape arrives.
 
 ```js
-import 'agent-mascots/core';
-import 'agent-mascots/shapes/orb';
-import 'agent-mascots/accessories/ears';
+import '@comfycomputer/agent-mascots/core';
+import '@comfycomputer/agent-mascots/shapes/orb';
+import '@comfycomputer/agent-mascots/accessories/ears';
 ```
 
 | Other imports | Contents |
 |---|---|
-| `agent-mascots/shapes/<name>` | One shape. Importing it registers it. |
-| `agent-mascots/accessories/<name>` | One accessory. Importing it registers it. |
-| `agent-mascots/jsx` | Types only (see [TypeScript](#typescript)) |
-| `agent-mascots/custom-elements.json` | The custom elements manifest |
+| `@comfycomputer/agent-mascots/shapes/<name>` | One shape. Importing it registers it. |
+| `@comfycomputer/agent-mascots/accessories/<name>` | One accessory. Importing it registers it. |
+| `@comfycomputer/agent-mascots/jsx` | Types only (see [TypeScript](#typescript)) |
+| `@comfycomputer/agent-mascots/custom-elements.json` | The custom elements manifest |
 
 The package is ESM-only. It's safe to import on a server: the tag renders as a plain element and
 upgrades in the browser.

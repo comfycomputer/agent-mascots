@@ -1,6 +1,6 @@
 <!-- Svelte 5 -->
 <script>
-  import 'agent-mascots';
+  import '@comfycomputer/agent-mascots';
 
   let mood = $state('thinking');
 </script>

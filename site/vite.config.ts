@@ -19,9 +19,9 @@ const out = process.env.SITE_OUT_DIR ? resolve(here, '..', process.env.SITE_OUT_
  * the package's `exports` map, subpaths included. Longest first: the first match wins.
  */
 export const alias = [
-  { find: /^agent-mascots\/(shapes|accessories)\/([\w-]+)$/, replacement: `${dist}/$1/$2.js` },
-  { find: /^agent-mascots\/(core|cdn|jsx)$/, replacement: `${dist}/$1.js` },
-  { find: /^agent-mascots$/, replacement: `${dist}/index.js` },
+  { find: /^@comfycomputer\/agent-mascots\/(shapes|accessories)\/([\w-]+)$/, replacement: `${dist}/$1/$2.js` },
+  { find: /^@comfycomputer\/agent-mascots\/(core|cdn|jsx)$/, replacement: `${dist}/$1.js` },
+  { find: /^@comfycomputer\/agent-mascots$/, replacement: `${dist}/index.js` },
 ];
 
 export default defineConfig({

@@ -57,7 +57,7 @@ test('code is live, minimal, and right for each framework', async ({ page }) => 
   expect(html).not.toContain('softness');
 
   await outputTab(page, 'react');
-  expect(await panel(page, 'react').textContent()).toMatch(/import 'agent-mascots';[\s\S]*return \([\s\S]*body-width="1\.2"[\s\S]*\/>/);
+  expect(await panel(page, 'react').textContent()).toMatch(/import '@comfycomputer\/agent-mascots';[\s\S]*return \([\s\S]*body-width="1\.2"[\s\S]*\/>/);
   await outputTab(page, 'vue');
   expect(await panel(page, 'vue').textContent()).toMatch(/<script setup>[\s\S]*<template>[\s\S]*shape="cloud"[\s\S]*<\/template>/);
   await outputTab(page, 'svelte');
@@ -298,7 +298,7 @@ test('draw turns a stroke into a shape, and a link carries it', async ({ page })
   // No tab of its own: every framework's code registers the drawn shape before its tag.
   await expect(panel(page, 'html')).toContainText("registerShape('drawn'");
   await outputTab(page, 'react');
-  await expect(panel(page, 'react')).toContainText("import { registerShape } from 'agent-mascots';");
+  await expect(panel(page, 'react')).toContainText("import { registerShape } from '@comfycomputer/agent-mascots';");
   await hashSettled(page, /shape=drawn.*a=/);
 
   const hash = await page.evaluate(() => location.hash);

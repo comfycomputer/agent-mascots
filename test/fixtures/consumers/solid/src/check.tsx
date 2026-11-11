@@ -1,5 +1,5 @@
-import 'agent-mascots/jsx';
-import type { AgentMascot } from 'agent-mascots';
+import '@comfycomputer/agent-mascots/jsx';
+import type { AgentMascot } from '@comfycomputer/agent-mascots';
 
 export function Valid(props: { target: Element }) {
   let mascot: AgentMascot | undefined;

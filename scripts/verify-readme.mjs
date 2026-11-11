@@ -5,7 +5,7 @@
 //   bun scripts/verify-readme.mjs
 //
 // A block with no way to be checked fails the run. The CDN URL is served from dist/cdn.js until
-// the package is on npm, and `npm install agent-mascots` installs the tarball instead.
+// the package is on npm, and `npm install @comfycomputer/agent-mascots` installs the tarball instead.
 // WebKit is skipped with a warning if it can't launch on this machine, unless CI is set.
 // oxlint-disable no-console -- this script's output is its report
 import { execFile } from 'node:child_process';
@@ -31,7 +31,7 @@ const local = (url) => (url.startsWith(MEDIA_BASE) ? url.slice(MEDIA_BASE.length
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('..', import.meta.url));
 const ORIGIN = 'http://readme.invalid';
-const CDN = 'https://cdn.jsdelivr.net/npm/agent-mascots/dist/cdn.js';
+const CDN = 'https://cdn.jsdelivr.net/npm/@comfycomputer/agent-mascots/dist/cdn.js';
 const MEDIA_LIMIT = 3_000_000;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css' };
 
@@ -220,7 +220,7 @@ const FRAMEWORKS = {
 /** What each sample should have done, appended after its own code. */
 const FOLLOW_UPS = [
   // The bare import: all it has to do is define the element.
-  [/^import 'agent-mascots';?\s*$/, "window.answer = customElements.get('agent-mascot') !== undefined;\n"],
+  [/^import '@comfycomputer\/agent-mascots';?\s*$/, "window.answer = customElements.get('agent-mascot') !== undefined;\n"],
   [/onAgentEvent/, "onAgentEvent('fail');\nwindow.answer = mascot.mood === 'error' && (onAgentEvent('nonsense'), mascot.mood === 'idle');\n"],
   [/mascot\.level/, "window.answer = mascot.level === 0.6 && mascot.mood === 'speaking';\n"],
   [/lookAway/, 'window.answer = true;\n'],
@@ -232,7 +232,7 @@ async function runScript(work, browsers, code, index) {
   const follow = FOLLOW_UPS.find(([pattern]) => pattern.test(code));
   if (!follow) throw new Error('no follow-up check for this sample');
   const entry = join(work, `sample-${index}.js`);
-  await writeFile(entry, `${/import/.test(code) ? '' : "import 'agent-mascots';\n"}${code}\n${follow[1]}`);
+  await writeFile(entry, `${/import/.test(code) ? '' : "import '@comfycomputer/agent-mascots';\n"}${code}\n${follow[1]}`);
   const { outputFiles } = await esbuild({ entryPoints: [entry], bundle: true, write: false, format: 'iife', logLevel: 'silent' });
   const script = outputFiles[0].text.replace(/<\/script/g, '<\\/script');
   // The element first: samples look it up as soon as they run.
@@ -292,7 +292,7 @@ async function verifyBlocks(blocks, work, browsers) {
         const scripts = JSON.parse(await readFile(join(root, 'package.json'), 'utf8')).scripts;
         const named = [...code.matchAll(/bun run (\S+)/g)].map((match) => match[1]);
         for (const name of named) if (!scripts[name]) throw new Error(`no script ${name}`);
-        return code.includes('install agent-mascots') ? 'not on npm yet, so the tarball was installed instead' : `scripts exist: ${named.join(', ')}`;
+        return code.includes('install @comfycomputer/agent-mascots') ? 'not on npm yet, so the tarball was installed instead' : `scripts exist: ${named.join(', ')}`;
       }
       throw new Error('no way to check this block');
     });

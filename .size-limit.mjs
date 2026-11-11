@@ -7,7 +7,7 @@ const production = (config) => ({
 
 // The library's size budget. Keep at least 500 B of margin under each limit.
 export default [
-  { name: 'agent-mascots (full)', path: 'dist/index.js', import: '*', gzip: true, limit: '29 kB', modifyRolldownConfig: production },
-  { name: 'agent-mascots/core', path: 'dist/core.js', import: '*', gzip: true, limit: '20 kB', modifyRolldownConfig: production },
-  { name: 'agent-mascots/cdn', path: 'dist/cdn.js', rolldown: false, gzip: true, limit: '29 kB' },
+  { name: '@comfycomputer/agent-mascots (full)', path: 'dist/index.js', import: '*', gzip: true, limit: '29 kB', modifyRolldownConfig: production },
+  { name: '@comfycomputer/agent-mascots/core', path: 'dist/core.js', import: '*', gzip: true, limit: '20 kB', modifyRolldownConfig: production },
+  { name: '@comfycomputer/agent-mascots/cdn', path: 'dist/cdn.js', rolldown: false, gzip: true, limit: '29 kB' },
 ];

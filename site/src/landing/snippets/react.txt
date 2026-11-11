@@ -1,6 +1,6 @@
 // React 19. For the types, import
-// 'agent-mascots/jsx' once.
-import 'agent-mascots';
+// '@comfycomputer/agent-mascots/jsx' once.
+import '@comfycomputer/agent-mascots';
 import { useState } from 'react';
 
 export function Agent() {

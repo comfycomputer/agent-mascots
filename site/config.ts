@@ -13,10 +13,10 @@ export const SITE_BASE = new URL(SITE_URL).pathname.replace(/\/$/, '');
 /** False prints "Not on npm yet" by the install command. Pages must also hide any CDN snippet. */
 export const NPM_PUBLISHED: boolean = false;
 
-export const INSTALL_COMMAND = 'npm install agent-mascots';
-export const CDN_URL = 'https://cdn.jsdelivr.net/npm/agent-mascots/dist/cdn.js';
+export const INSTALL_COMMAND = 'npm install @comfycomputer/agent-mascots';
+export const CDN_URL = 'https://cdn.jsdelivr.net/npm/@comfycomputer/agent-mascots/dist/cdn.js';
 /** What the plain HTML sample loads until the CDN URL exists. Checked against a real install. */
-export const LOCAL_SCRIPT = './node_modules/agent-mascots/dist/cdn.js';
+export const LOCAL_SCRIPT = './node_modules/@comfycomputer/agent-mascots/dist/cdn.js';
 
 /** The script the plain HTML sample loads: the CDN once the package is published. */
 export const scriptSrc = (published = NPM_PUBLISHED) => (published ? CDN_URL : LOCAL_SCRIPT);

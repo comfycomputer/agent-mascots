@@ -13,7 +13,7 @@ import { build as vite } from 'vite';
 const BLANK = '/test/browser/blank.html';
 const NAUGHTY = '<agent-mascot shape="nope" material="wood" sky="a, b, c" size="200"></agent-mascot>';
 const dist = resolve('dist/index.js');
-const ENTRY = "import 'agent-mascots';\n";
+const ENTRY = "import '@comfycomputer/agent-mascots';\n";
 
 type Bundle = (nodeEnv: string, dir: string) => Promise<string>;
 
@@ -25,7 +25,7 @@ const BUNDLERS: Record<string, Bundle> = {
       configFile: false,
       root: dir,
       logLevel: 'silent',
-      resolve: { alias: { 'agent-mascots': dist } },
+      resolve: { alias: { '@comfycomputer/agent-mascots': dist } },
       define: { 'process.env.NODE_ENV': JSON.stringify(nodeEnv) },
       build: { write: false, rollupOptions: { input } },
     });
@@ -39,7 +39,7 @@ const BUNDLERS: Record<string, Bundle> = {
       format: 'esm',
       minify: true,
       write: false,
-      alias: { 'agent-mascots': dist },
+      alias: { '@comfycomputer/agent-mascots': dist },
       define: { 'process.env.NODE_ENV': JSON.stringify(nodeEnv) },
       logLevel: 'silent',
     });

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AgentMascot } from 'agent-mascots';
+  import type { AgentMascot } from '@comfycomputer/agent-mascots';
 
   let { target }: { target: Element } = $props();
   let mascot = $state<AgentMascot>();

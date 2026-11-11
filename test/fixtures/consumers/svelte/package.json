@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "agent-mascots": "*",
+    "@comfycomputer/agent-mascots": "*",
     "svelte": "5.57.3",
     "svelte-check": "4.7.8",
     "typescript": "5.9.3"

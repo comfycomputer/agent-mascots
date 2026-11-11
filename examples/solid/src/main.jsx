@@ -1,6 +1,6 @@
 import { createSignal, For } from 'solid-js';
 import { render } from 'solid-js/web';
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 import './style.css';
 
 const MOODS = ['idle', 'thinking', 'working', 'success', 'error'];

@@ -2,7 +2,7 @@
  * Types for `<agent-mascot>` in React, Vue, Svelte and Solid. Import this once
  * anywhere in a project, such as in a `.d.ts` file:
  *
- *     import 'agent-mascots/jsx';
+ *     import '@comfycomputer/agent-mascots/jsx';
  *
  * Each framework block below only applies when that framework is installed. The
  * `@ts-ignore` comments are what make that work: without them, projects that have

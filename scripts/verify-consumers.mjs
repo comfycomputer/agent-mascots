@@ -85,7 +85,7 @@ async function install(name, tarball) {
   await cp(join(templates, name), cwd, { recursive: true });
   const file = join(cwd, 'package.json');
   const manifest = JSON.parse(await readFile(file, 'utf8'));
-  manifest.dependencies['agent-mascots'] = `file:${tarball}`;
+  manifest.dependencies['@comfycomputer/agent-mascots'] = `file:${tarball}`;
   await writeFile(file, JSON.stringify(manifest, null, 2));
   await shell(cwd, 'npm', 'install', '--no-audit', '--no-fund', '--no-package-lock');
   return cwd;
@@ -186,7 +186,7 @@ const assertEqual = (actual, expected, what) => {
 
 /** A path unique to each shape, for checking what a bundle includes. */
 async function shapeFingerprints(cwd) {
-  const dir = join(cwd, 'node_modules/agent-mascots/dist/shapes');
+  const dir = join(cwd, 'node_modules/@comfycomputer/agent-mascots/dist/shapes');
   const fingerprints = {};
   for (const file of await readdir(dir)) {
     if (!file.endsWith('.js')) continue;
@@ -236,7 +236,7 @@ async function verifyHtml(cwd) {
     assertMascot(await inspect(page, '#gem'), 'gem');
     // Core ships one fallback body, so an unloaded shape still draws.
     assertMascot(await inspect(page, '#missing'), 'unloaded shape');
-    assertEqual(await page.evaluate(async () => (await import('agent-mascots/core')).MASCOT_SHAPES.length), 16, 'exports');
+    assertEqual(await page.evaluate(async () => (await import('@comfycomputer/agent-mascots/core')).MASCOT_SHAPES.length), 16, 'exports');
   });
 
   await inBrowsers('html: :not(:defined) sizing avoids layout shift', `${origin}/defined.html`, async (page) => {

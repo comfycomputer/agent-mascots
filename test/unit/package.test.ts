@@ -30,10 +30,10 @@ const cdn = () => read('dist/cdn.js');
 describe('the site', () => {
   it('resolves every kind of package entry, as a consumer would', async () => {
     const entry = [
-      "import { MASCOT_SHAPES } from 'agent-mascots';",
-      "import { defineAgentMascot } from 'agent-mascots/core';",
-      "import 'agent-mascots/shapes/orb';",
-      "import 'agent-mascots/accessories/ears';",
+      "import { MASCOT_SHAPES } from '@comfycomputer/agent-mascots';",
+      "import { defineAgentMascot } from '@comfycomputer/agent-mascots/core';",
+      "import '@comfycomputer/agent-mascots/shapes/orb';",
+      "import '@comfycomputer/agent-mascots/accessories/ears';",
       'console.log(MASCOT_SHAPES, defineAgentMascot);',
     ].join('\n');
     const virtual = {

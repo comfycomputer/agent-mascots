@@ -19,7 +19,7 @@
         return `${width}x${height}`;
       };
       const before = box();
-      await import('./node_modules/agent-mascots/dist/cdn.js');
+      await import('./node_modules/@comfycomputer/agent-mascots/dist/cdn.js');
       globalThis.boxes = [before, box()];
     </script>
   </head>

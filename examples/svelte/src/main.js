@@ -1,5 +1,5 @@
 import { mount } from 'svelte';
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 import './style.css';
 import App from './App.svelte';
 

@@ -105,7 +105,7 @@ async function compile() {
   );
 
   // Hand-written because the compiler drops the `@ts-ignore` comments it depends on.
-  // The empty module lets `import 'agent-mascots/jsx'` survive a bundler or Node.
+  // The empty module lets `import '@comfycomputer/agent-mascots/jsx'` survive a bundler or Node.
   await copyFile(join(src, 'jsx.d.ts'), join(staging, 'jsx.d.ts'));
   await writeFile(join(staging, 'jsx.js'), 'export {};\n');
 }

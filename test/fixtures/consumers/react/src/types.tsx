@@ -1,6 +1,6 @@
 // Not imported by the app: this file exists for the type checker.
 import { useRef, type ComponentProps } from 'react';
-import type { AgentMascot } from 'agent-mascots';
+import type { AgentMascot } from '@comfycomputer/agent-mascots';
 
 export function Valid() {
   const ref = useRef<AgentMascot>(null);

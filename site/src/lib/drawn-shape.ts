@@ -4,7 +4,7 @@
 // both need them, and a share link carries
 // only the anchors, so this has to accept anything.
 
-import type { ShapeOptions, registerShape } from 'agent-mascots';
+import type { ShapeOptions, registerShape } from '@comfycomputer/agent-mascots';
 
 export const DRAWN_SHAPE = 'drawn';
 export const ANCHOR_COUNT = 24;

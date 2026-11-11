@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 import './style.css';
 import App from './App.vue';
 

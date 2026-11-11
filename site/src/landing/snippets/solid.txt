@@ -1,4 +1,4 @@
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 import { createSignal } from 'solid-js';
 
 export function Agent() {

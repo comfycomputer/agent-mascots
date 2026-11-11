@@ -1,9 +1,9 @@
 // Compiled with `skipLibCheck` off and no UI framework installed: the published declarations
-// have to stand on their own, and the framework blocks in `agent-mascots/jsx` must stay silent.
-import 'agent-mascots/accessories/ring';
-import 'agent-mascots/jsx';
-import 'agent-mascots/shapes/orb';
-import type { AgentMascotAttributes, AgentMascotProps } from 'agent-mascots/jsx';
+// have to stand on their own, and the framework blocks in `@comfycomputer/agent-mascots/jsx` must stay silent.
+import '@comfycomputer/agent-mascots/accessories/ring';
+import '@comfycomputer/agent-mascots/jsx';
+import '@comfycomputer/agent-mascots/shapes/orb';
+import type { AgentMascotAttributes, AgentMascotProps } from '@comfycomputer/agent-mascots/jsx';
 import {
   AgentMascot,
   type ConfigureOptions,
@@ -12,9 +12,9 @@ import {
   type MoodName,
   registerShape,
   type ShapeOptions,
-} from 'agent-mascots';
-import { defineAgentMascot } from 'agent-mascots/core';
-import { MASCOT_SHAPES } from 'agent-mascots/cdn';
+} from '@comfycomputer/agent-mascots';
+import { defineAgentMascot } from '@comfycomputer/agent-mascots/core';
+import { MASCOT_SHAPES } from '@comfycomputer/agent-mascots/cdn';
 
 defineAgentMascot();
 

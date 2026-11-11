@@ -2,7 +2,7 @@
 // with a hash, so a plain visit doesn't pay for the allowlist. The hash is untrusted: parseHash
 // lets only known attributes through.
 
-import { registerShape } from 'agent-mascots';
+import { registerShape } from '@comfycomputer/agent-mascots';
 import { DRAWN_SHAPE, registerDrawn } from '../lib/drawn-shape';
 import { parseHash } from '../lib/hash';
 

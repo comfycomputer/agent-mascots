@@ -6,6 +6,6 @@ export default defineConfig({
     // Vue has to be told this tag is a custom element, not a Vue component.
     vue({ template: { compilerOptions: { isCustomElement: (tag) => tag === 'agent-mascot' } } }),
   ],
-  // Uses this repo's build. Remove this, and add agent-mascots as a dependency, in your own project.
-  resolve: { alias: { 'agent-mascots': new URL('../../dist/index.js', import.meta.url).pathname } },
+  // Uses this repo's build. Remove this, and add @comfycomputer/agent-mascots as a dependency, in your own project.
+  resolve: { alias: { '@comfycomputer/agent-mascots': new URL('../../dist/index.js', import.meta.url).pathname } },
 });

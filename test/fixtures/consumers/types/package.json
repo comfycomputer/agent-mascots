@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "agent-mascots": "*",
+    "@comfycomputer/agent-mascots": "*",
     "typescript": "7.0.2",
     "typescript5": "npm:typescript@5.9.3"
   }

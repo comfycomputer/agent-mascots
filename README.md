@@ -14,12 +14,12 @@
 ## Quick start
 Install the package via npm:
 ```sh
-npm install agent-mascots
+npm install @comfycomputer/agent-mascots
 ```
 
 Import the package:
 ```js
-import 'agent-mascots'
+import '@comfycomputer/agent-mascots'
 ```
 
 Then, add the mascot to your application!

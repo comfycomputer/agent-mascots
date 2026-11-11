@@ -9,7 +9,7 @@ export type Framework = (typeof FRAMEWORKS)[number];
 
 type Attributes = readonly (readonly [name: string, value: string])[];
 
-const DOCS_NOTE = "<!-- import 'agent-mascots' first -->";
+const DOCS_NOTE = "<!-- import '@comfycomputer/agent-mascots' first -->";
 const VUE_NOTE = '<!-- Set isCustomElement in the compiler options -->';
 
 const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -28,7 +28,7 @@ function element(rows: Attributes, { selfClose = false, quote = escape } = {}): 
 
 /** The import, and for a drawn shape the registration it needs before the tag can use it. */
 const imports = (shape: ShapeOptions | null) =>
-  shape ? `import { registerShape } from 'agent-mascots';\n\nregisterShape('drawn', ${JSON.stringify(shape, null, 2)});` : "import 'agent-mascots';";
+  shape ? `import { registerShape } from '@comfycomputer/agent-mascots';\n\nregisterShape('drawn', ${JSON.stringify(shape, null, 2)});` : "import '@comfycomputer/agent-mascots';";
 
 const jsx = (body: string, shape: ShapeOptions | null) => `${imports(shape)}\n\nexport function Mascot() {\n  return (\n${indent(body, '    ')}\n  );\n}`;
 

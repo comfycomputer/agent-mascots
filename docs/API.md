@@ -114,8 +114,8 @@ space:
 `MASCOT_SHAPES`, `MASCOT_MATERIALS`, `MASCOT_ACCESSORIES`, `MASCOT_EYE_SHAPES` and `MASCOT_MOODS`
 are arrays of the built-in values.
 
-`AgentMascot` is the element class. `defineAgentMascot()` registers it. Importing `agent-mascots`
-or `agent-mascots/core` already does this. Calling it again is safe, and outside a browser it does
+`AgentMascot` is the element class. `defineAgentMascot()` registers it. Importing `@comfycomputer/agent-mascots`
+or `@comfycomputer/agent-mascots/core` already does this. Calling it again is safe, and outside a browser it does
 nothing.
 
 The package also exports these types: `MascotProps`, `ConfigureOptions`, `MoodName`,
@@ -213,7 +213,7 @@ on how the library is loaded:
 |---|---|
 | Bundled, with `process.env.NODE_ENV` set to `production` | Off |
 | Bundled for development | On |
-| `agent-mascots/cdn` | Off. The messages aren't included in the file. |
+| `@comfycomputer/agent-mascots/cdn` | Off. The messages aren't included in the file. |
 | The unbundled modules in a browser, for example through an import map | On, because nothing marks the page as production |
 | Node | On unless `NODE_ENV` is `production` |
 

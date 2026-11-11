@@ -1,6 +1,6 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import 'agent-mascots';
+import '@comfycomputer/agent-mascots';
 
 function App() {
   const [pokes, setPokes] = useState(0);

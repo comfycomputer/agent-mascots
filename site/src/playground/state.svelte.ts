@@ -3,7 +3,7 @@
 // derived from it: the stage and its mirrors, the code and the share link. A gesture ends with
 // `commit()`, which marks an undo point.
 
-import { registerShape } from 'agent-mascots';
+import { registerShape } from '@comfycomputer/agent-mascots';
 import { createContext } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { ATTRIBUTES, valuesOf } from '../lib/attributes';
